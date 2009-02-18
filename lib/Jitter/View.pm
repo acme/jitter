@@ -4,24 +4,23 @@ use warnings;
 use Jifty::View::Declare -base;
 
 template 'index.html' => page { title => "Jitter" } content {
-    { title is 'Some Title' }
     b {"The Index"};
-    h1 { 'All Posts' }
+    a { attr { href => '/post/' } 'Write a post' }
+    h1 {'All Posts'}
     dl {
         my $posts = Jitter::Model::PostCollection->new;
         $posts->unlimit();
-        while (my $p = $posts->next) {
-            dt { $p->title }
-            dd { $p->body }
+        while ( my $p = $posts->next ) {
+            dt { $p->title } dd { $p->body };
         }
     }
 };
 
-template 'post' => sub {
+template 'post' => page { title => 'Foo' } content {
     my $action = Jifty->web->new_action( class => 'CreatePost' );
     form {
-        render_param ($action => 'title', focus => 1);
-        render_param ($action => 'body' );
+        form_next_page url => '/';
+        render_action $action;
         form_submit( label => _('Add post') );
     }
 };
