@@ -32,7 +32,7 @@ private template 'jit' => sub {
     };
 };
 
-template 'post' => page { title => 'Foo' } content {
+template 'post' => page { title => 'Create a jit' } content {
     my $action = Jifty->web->new_action( class => 'CreateJit' );
     form {
         form_next_page url => '/';
