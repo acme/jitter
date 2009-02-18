@@ -12,10 +12,11 @@ use Jitter::Record schema {
         render_as 'Textarea',
         hints is 'Make it short and sweet';
     column
-        date_jitted => type is 'datetime',
+        datetime_jitted => type is 'datetime',
         is mandatory,
         render_as 'Unrendered',
-        input_filters are 'Jifty::DBI::Filter::DateTime';
+        input_filters are 'Jifty::DBI::Filter::DateTime',
+        default is defer { DateTime->now };
 };
 
 1;
