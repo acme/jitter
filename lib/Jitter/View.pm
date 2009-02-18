@@ -9,7 +9,7 @@ template 'index.html' => page { title => "Jitter" } content {
     h1 { 'All Posts' }
     dl {
         my $posts = Jitter::Model::PostCollection->new;
-        $posts->limit();
+        $posts->unlimit();
         while (my $p = $posts->next) {
             dt { $p->title }
             dd { $p->body }
