@@ -5,8 +5,16 @@ use Jifty::View::Declare -base;
 use DateTime::Format::Human::Duration;
 
 template 'index.html' => page { title => "Jitter" } content {
-    outs h1 {'jitter'}
-    outs show('create_jit_widget');
+    h1 {'jitter'};
+    show('create_jit_widget');
+    Jifty->web->region(
+        name     => 'jits',
+        path     => '/jits',
+        defaults => { argname => 'some value' },
+    );
+};
+
+template 'jits' => sub {
     ol {
         attr { class => 'jits' };
         my $jits = Jitter::Model::JitCollection->new;
@@ -38,7 +46,10 @@ private template 'create_jit_widget' => sub {
     form {
         form_next_page url => '/';
         render_action $action;
-        form_submit( label => 'Jit it!' );
+        form_submit(
+            label   => 'Jit it!',
+            onclick => { submit => $action, refresh => 'jits' },
+        );
     };
 };
 
