@@ -7,6 +7,7 @@ template 'index.html' => page { title => "Jitter" } content {
     a { attr { href => '/post/' } 'Write a jit' }
     h1 {'All Jits'}
     ol {
+        attr { class => 'jits' };
         my $jits = Jitter::Model::JitCollection->new;
         $jits->unlimit();
         while ( my $jit = $jits->next ) {
@@ -17,8 +18,15 @@ template 'index.html' => page { title => "Jitter" } content {
 
 private template 'jit' => sub {
     my ( $self, $jit ) = @_;
-    warn "have jit $jit";
-    li { attr { class => 'jit' } $jit->body };
+    li {
+        attr { class => 'jit' };
+        outs $jit->body;
+        span {
+            attr { class => 'meta' };
+            '5 minutes ago';
+        };
+
+    };
 };
 
 template 'post' => page { title => 'Foo' } content {

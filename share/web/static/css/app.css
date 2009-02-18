@@ -1,0 +1,23 @@
+ol.jits li:hover, ol.jits li.hover {
+background-color:#F7F7F7;
+}
+ol.jits li {
+border-bottom:1px dashed #D2DADA;
+line-height:1.1em;
+padding:0.7em 0 0.6em;
+position:relative;
+}
+ol.jits {
+font-size:1.2em;
+list-style-image:none;
+list-style-position:outside;
+list-style-type:none;
+}
+ol.jits span.meta, .hentry .meta {
+color:#999999;
+display:block;
+font-family:georgia;
+font-size:0.8em;
+font-style:italic;
+margin:3px 0 0;
+}
