@@ -7,31 +7,29 @@ use DateTime::Format::Human::Duration;
 template 'index.html' => page { title => "Jitter" } content {
     h1 {'jitter'};
     show('create_jit_widget');
-    Jifty->web->region(
-        name => 'jits',
-        path => '/jits',
-    );
+    ol {
+        Jifty->web->region(
+            name => 'jits',
+            path => '/jits',
+        );
+    };
 };
 
 template 'jits' => sub {
-    ol {
-        attr { class => 'jits' };
-        my $jits = Jitter::Model::JitCollection->new;
-        $jits->unlimit();
-        $jits->order_by( column => 'datetime_jitted', order => 'DES' );
-        while ( my $jit = $jits->next ) {
-            show( 'jit', $jit );
-        }
+    attr { class => 'jits' };
+    my $jits = Jitter::Model::JitCollection->new;
+    $jits->unlimit();
+    $jits->order_by( column => 'datetime_jitted', order => 'DES' );
+    while ( my $jit = $jits->next ) {
+        show( 'jit', $jit );
     }
 };
 
 template 'onejit' => sub {
     my $self = shift;
-    my $id   = Jifty->web->request->{arguments}->{'id'};
-
-    my $jits = Jitter::Model::JitCollection->new;
-    $jits->limit( column => 'id', value => $id );
-    my $jit = $jits->next;
+    my $id   = get('id');
+    my $jit  = Jitter::Model::Jit->new;
+    $jit->load($id);
     show( 'jit', $jit );
 };
 
