@@ -8,9 +8,8 @@ template 'index.html' => page { title => "Jitter" } content {
     h1 {'jitter'};
     show('create_jit_widget');
     Jifty->web->region(
-        name     => 'jits',
-        path     => '/jits',
-        defaults => { argname => 'some value' },
+        name => 'jits',
+        path => '/jits',
     );
 };
 
@@ -24,6 +23,16 @@ template 'jits' => sub {
             show( 'jit', $jit );
         }
     }
+};
+
+template 'onejit' => sub {
+    my $self = shift;
+    my $id   = Jifty->web->request->{arguments}->{'id'};
+
+    my $jits = Jitter::Model::JitCollection->new;
+    $jits->limit( column => 'id', value => $id );
+    my $jit = $jits->next;
+    show( 'jit', $jit );
 };
 
 private template 'jit' => sub {
@@ -42,13 +51,19 @@ private template 'jit' => sub {
 };
 
 private template 'create_jit_widget' => sub {
-    my $action = Jifty->web->new_action( class => 'CreateJit' );
+    my $create = Jifty->web->new_action( class => 'CreateJit' );
     form {
         form_next_page url => '/';
-        render_action $action;
+        render_action $create;
         form_submit(
             label   => 'Jit it!',
-            onclick => { submit => $action, refresh => 'jits' },
+            onclick => {
+                submit       => $create,
+                refresh_self => 1,
+                region       => 'jits',
+                prepend      => '/onejit',
+                args => { id => { result_of => $create, name => 'id' } },
+            },
         );
     };
 };
