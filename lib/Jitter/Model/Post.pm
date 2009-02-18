@@ -6,18 +6,13 @@ use Jifty::DBI::Schema;
 
 use Jitter::Record schema {
     column
-        title => type is 'text',
+        jit => type is 'text',
         label is 'Title',
-        default is 'Untitled post';
-
-    column
-        body => type is 'text',
-        label is 'Content',
-        render_as 'Textarea';
-
+        is mandatory,
+        max_length is 160,
+        render_as 'Textarea',
+        hints is 'Make it short and sweet';
 };
-
-# Your model-specific methods go here.
 
 1;
 

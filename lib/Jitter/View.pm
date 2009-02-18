@@ -5,13 +5,13 @@ use Jifty::View::Declare -base;
 
 template 'index.html' => page { title => "Jitter" } content {
     b {"The Index"};
-    a { attr { href => '/post/' } 'Write a post' }
+    a { attr { href => '/post/' } 'Write a jit' }
     h1 {'All Posts'}
-    dl {
+    ul {
         my $posts = Jitter::Model::PostCollection->new;
         $posts->unlimit();
         while ( my $p = $posts->next ) {
-            dt { $p->title } dd { $p->body };
+            li { $p->jit };
         }
     }
 };
