@@ -13,4 +13,9 @@ before '*' => run {
     }
 };
 
+on 'user/*' => run {
+    set( name => $1 );
+    show 'user';
+}
+
 1;

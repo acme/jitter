@@ -99,7 +99,7 @@ private template 'jit' => sub {
         attr { class => 'jit' };
         strong {
             a {
-                attr { href => '/user/?name=' . $jit->posted_by->name };
+                attr { href => '/user/' . $jit->posted_by->name };
                 $jit->posted_by->name;
             }
         };
