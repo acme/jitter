@@ -26,7 +26,8 @@ sub current_user_can {
 
     # warn "$self $action $attr";
 
-    return 1 if ( $action = 'read' && $self->id == $self->current_user->id );
+    return 1 if $action eq 'read';
+    return 1 if ( $action eq 'read' && $self->id == $self->current_user->id );
     return $self->SUPER::current_user_can( $action, $attr );
 }
 
