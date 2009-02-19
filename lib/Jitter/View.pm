@@ -6,6 +6,13 @@ use DateTime::Format::Human::Duration;
 
 template 'index.html' => page { title => "Jitter" } content {
     show('mytitle');
+    outs_raw q|
+<script type="text/javascript">
+jQuery(document).ready(function() {
+  jQuery('abbr[class*=timeago]').timeago();
+});
+</script>
+|;
     render_region( path => '/create_jit_widget', name => 'create' );
     ol {
         attr { class => 'jits' };
@@ -109,9 +116,17 @@ private template 'jit' => sub {
         span {
             attr { class => 'meta' };
             my $span = DateTime::Format::Human::Duration->new();
-            outs $span->format_duration_between( $jit->datetime_jitted,
-                DateTime->now );
-            outs ' ago from jitter';
+            abbr {
+                attr {
+                    class => 'timeago',
+                    title => $jit->datetime_jitted->ymd . 'T'
+                        . $jit->datetime_jitted->hms . 'Z',
+                };
+                outs $span->format_duration_between( $jit->datetime_jitted,
+                    DateTime->now );
+                outs ' ago';
+            };
+            outs ' from jitter';
         };
     };
 };
