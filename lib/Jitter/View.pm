@@ -16,10 +16,29 @@ template 'index.html' => page { title => "Jitter" } content {
     };
 };
 
+template 'user' => page { title => "Jitter for " . get('name') } content {
+    h1 { 'jitter for ' . get('name') };
+    ol {
+        attr { class => 'jits' };
+        Jifty->web->region(
+            name      => 'jits',
+            path      => '/jits',
+            arguments => { name => get('name') },
+        );
+    };
+};
+
 template 'jits' => sub {
     my $page = get('page') || 1;
+    my $name = get('name');
     my $jits = Jitter::Model::JitCollection->new;
-    $jits->unlimit();
+    if ($name) {
+        my $user = Jitter::Model::User->new;
+        $user->load_by_cols( name => $name );
+        $jits->limit( column => 'posted_by', value => $user );
+    } else {
+        $jits->unlimit();
+    }
     $jits->set_page_info(
         current_page => $page,
         per_page     => 5,
@@ -67,7 +86,7 @@ private template 'jit' => sub {
         attr { class => 'jit' };
         strong {
             a {
-                attr { href => '/' . $jit->posted_by->name };
+                attr { href => '/user/?name=' . $jit->posted_by->name };
                 $jit->posted_by->name;
             }
         };
