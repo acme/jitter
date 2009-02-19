@@ -32,6 +32,14 @@ template 'jits' => sub {
         attr { class => 'bottom-nav' };
         div {
             attr { id => 'pagination', class => 'pagination' };
+            if ( $jits->pager->next_page ) {
+                Jifty->web->link(
+                    label   => 'Older',
+                    class   => 'section_links',
+                    rel     => 'prev',
+                    onclick => { args => { page => $jits->pager->next_page } }
+                );
+            }
             if ( $jits->pager->previous_page ) {
                 Jifty->web->link(
                     label => 'Newer',
@@ -39,14 +47,6 @@ template 'jits' => sub {
                     rel   => 'next',
                     onclick =>
                         { args => { page => $jits->pager->previous_page } }
-                );
-            }
-            if ( $jits->pager->next_page ) {
-                Jifty->web->link(
-                    label   => 'Older',
-                    class   => 'section_links',
-                    rel     => 'prev',
-                    onclick => { args => { page => $jits->pager->next_page } }
                 );
             }
         }
@@ -88,6 +88,7 @@ private template 'create_jit_widget' => sub {
                 refresh_self => 1,
                 region       => 'jits',
                 prepend      => '/onejit',
+                effect       => 'SlideDown',
                 args => { id => { result_of => $create, name => 'id' } },
             },
         );
