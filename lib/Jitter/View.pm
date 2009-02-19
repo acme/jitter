@@ -8,6 +8,7 @@ template 'index.html' => page { title => "Jitter" } content {
     h1 {'jitter'};
     show('create_jit_widget');
     ol {
+        attr { class => 'jits' };
         Jifty->web->region(
             name => 'jits',
             path => '/jits',
@@ -16,12 +17,28 @@ template 'index.html' => page { title => "Jitter" } content {
 };
 
 template 'jits' => sub {
-    attr { class => 'jits' };
+    my $page = get('page') || 1;
     my $jits = Jitter::Model::JitCollection->new;
     $jits->unlimit();
+    $jits->set_page_info(
+        current_page => $page,
+        per_page     => 5,
+    );
     $jits->order_by( column => 'datetime_jitted', order => 'DES' );
     while ( my $jit = $jits->next ) {
         show( 'jit', $jit );
+    }
+    if ( $jits->pager->previous_page ) {
+        Jifty->web->link(
+            label   => "Newer jits",
+            onclick => { args => { page => $jits->pager->previous_page } }
+        );
+    }
+    if ( $jits->pager->next_page ) {
+        Jifty->web->link(
+            label   => "Older jits",
+            onclick => { args => { page => $jits->pager->next_page } }
+        );
     }
 };
 
