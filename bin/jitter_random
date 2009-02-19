@@ -10,12 +10,15 @@ Jifty->web->request( Jifty::Request->new );
 Jifty->web->response( Jifty::Response->new );
 use Jitter::Model::Jit;
 
+my $acme = Jitter::Model::User->new;
+$acme->load_by_cols( name => 'acme' );
+
 my $meta = Acme::MetaSyntactic->new('any');
 
 while (1) {
     my $body = $meta->name();
     my $jit  = Jitter::Model::Jit->new;
-    $jit->create( body => $body );
+    $jit->create( body => $body, posted_by => $acme );
     say $body;
     sleep 10;
 }
