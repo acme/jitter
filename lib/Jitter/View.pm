@@ -129,6 +129,8 @@ template 'create_jit_widget' => sub {
                     region  => 'jits',
                     prepend => '/onejit',
                     effect  => 'SlideDown',
+                    beforeclick =>
+                        "jQuery('.jit:last').slideUp('normal', function() { jQuery(this).remove(); } );",
                     args => { id => { result_of => $create, name => 'id' } },
                 }
             ],
