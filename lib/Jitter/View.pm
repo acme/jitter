@@ -6,13 +6,7 @@ use DateTime::Format::Human::Duration;
 
 template 'index.html' => page { title => "Jitter" } content {
     show('mytitle');
-    outs_raw q|
-<script type="text/javascript">
-jQuery(document).ready(function() {
-  jQuery('abbr[class*=timeago]').timeago();
-});
-</script>
-|;
+    show('timeago');
     render_region( path => '/create_jit_widget', name => 'create' );
     ol {
         attr { class => 'jits' };
@@ -21,6 +15,16 @@ jQuery(document).ready(function() {
             path => '/jits',
         );
     };
+};
+
+private template 'timeago' => sub {
+    outs_raw q|
+<script type="text/javascript">
+jQuery(document).ready(function() {
+  jQuery('abbr[class*=timeago]').timeago();
+});
+</script>
+|;
 };
 
 private template 'mytitle' => sub {
@@ -98,6 +102,7 @@ template 'onejit' => sub {
     my $jit  = Jitter::Model::Jit->new;
     $jit->load($id);
     show( 'jit', $jit );
+    show('timeago');
 };
 
 private template 'jit' => sub {
