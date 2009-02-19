@@ -65,7 +65,15 @@ private template 'jit' => sub {
     my ( $self, $jit ) = @_;
     li {
         attr { class => 'jit' };
-        outs $jit->body;
+        strong {
+            a {
+                attr { href => '/' . $jit->posted_by->name };
+                $jit->posted_by->name;
+            }
+        };
+        span {
+            attr { class => 'entry-content' } outs $jit->body;
+        };
         span {
             attr { class => 'meta' };
             my $span = DateTime::Format::Human::Duration->new();

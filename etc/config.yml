@@ -46,7 +46,8 @@ framework:
 
     - 
       AdminUI: {}
-
+    - User: {}
+    - Authentication::Password: {}
   PubSub: 
     Backend: Memcached
     Enable: ~
