@@ -1,0 +1,21 @@
+#!/home/acme/bin/perl
+use strict;
+use warnings;
+use lib 'lib';
+use Acme::MetaSyntactic;
+use Perl6::Say;
+use Jifty::Everything;
+BEGIN { Jifty->new; }
+Jifty->web->request( Jifty::Request->new );
+Jifty->web->response( Jifty::Response->new );
+use Jitter::Model::Jit;
+
+my $meta = Acme::MetaSyntactic->new('any');
+
+while (1) {
+    my $body = $meta->name();
+    my $jit  = Jitter::Model::Jit->new;
+    $jit->create( body => $body );
+    say $body;
+    sleep 10;
+}
