@@ -5,7 +5,7 @@ use Jifty::View::Declare -base;
 use DateTime::Format::Human::Duration;
 
 template 'index.html' => page { title => "Jitter" } content {
-    h1 {'jitter'};
+    show('mytitle');
     show('create_jit_widget');
     ol {
         attr { class => 'jits' };
@@ -16,8 +16,21 @@ template 'index.html' => page { title => "Jitter" } content {
     };
 };
 
-template 'user' => page { title => "Jitter for " . get('name') } content {
-    h1 { 'jitter for ' . get('name') };
+private template 'mytitle' => sub {
+    my ( $self, $title ) = @_;
+    $title ||= 'jitter';
+    h1 {
+        a {
+            attr { href => '/' } img {
+                attr { src => '/static/images/jitter.png', border => 0 };
+            }
+        };
+        outs $title;
+    };
+};
+
+template 'user' => page { title => 'Jitter for ' . get('name') } content {
+    show( 'mytitle', 'jitter for ' . get('name') );
     ol {
         attr { class => 'jits' };
         Jifty->web->region(
