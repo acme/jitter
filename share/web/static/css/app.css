@@ -21,3 +21,14 @@ font-size:0.8em;
 font-style:italic;
 margin:3px 0 0;
 }
+#pagination.pagination a, #pagination.pagination .link-like {
+float:right;
+margin-right:10px;
+text-align:center;
+}
+
+.bottom-nav a, .bottom-nav .link-like {
+border:1px solid #CECECE;
+margin:0.25em 0;
+padding:0.25em 1em;
+}

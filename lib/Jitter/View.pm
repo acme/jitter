@@ -28,17 +28,28 @@ template 'jits' => sub {
     while ( my $jit = $jits->next ) {
         show( 'jit', $jit );
     }
-    if ( $jits->pager->previous_page ) {
-        Jifty->web->link(
-            label   => "Newer jits",
-            onclick => { args => { page => $jits->pager->previous_page } }
-        );
-    }
-    if ( $jits->pager->next_page ) {
-        Jifty->web->link(
-            label   => "Older jits",
-            onclick => { args => { page => $jits->pager->next_page } }
-        );
+    div {
+        attr { class => 'bottom-nav' };
+        div {
+            attr { id => 'pagination', class => 'pagination' };
+            if ( $jits->pager->previous_page ) {
+                Jifty->web->link(
+                    label => 'Newer',
+                    class => 'section_links',
+                    rel   => 'next',
+                    onclick =>
+                        { args => { page => $jits->pager->previous_page } }
+                );
+            }
+            if ( $jits->pager->next_page ) {
+                Jifty->web->link(
+                    label   => 'Older',
+                    class   => 'section_links',
+                    rel     => 'prev',
+                    onclick => { args => { page => $jits->pager->next_page } }
+                );
+            }
+        }
     }
 };
 
