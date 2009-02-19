@@ -6,7 +6,7 @@ use DateTime::Format::Human::Duration;
 
 template 'index.html' => page { title => "Jitter" } content {
     show('mytitle');
-    show('create_jit_widget');
+    render_region( path => '/create_jit_widget', name => 'create' );
     ol {
         attr { class => 'jits' };
         Jifty->web->region(
@@ -116,21 +116,22 @@ private template 'jit' => sub {
     };
 };
 
-private template 'create_jit_widget' => sub {
+template 'create_jit_widget' => sub {
     my $create = Jifty->web->new_action( class => 'CreateJit' );
     form {
         form_next_page url => '/';
         render_action $create;
         form_submit(
             label   => 'Jit it!',
-            onclick => {
-                submit       => $create,
-                refresh_self => 1,
-                region       => 'jits',
-                prepend      => '/onejit',
-                effect       => 'SlideDown',
-                args => { id => { result_of => $create, name => 'id' } },
-            },
+            onclick => [
+                { refresh_self => 1 },
+                {   submit  => $create,
+                    region  => 'jits',
+                    prepend => '/onejit',
+                    effect  => 'SlideDown',
+                    args => { id => { result_of => $create, name => 'id' } },
+                }
+            ],
         );
     };
 };
